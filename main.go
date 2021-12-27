@@ -61,10 +61,13 @@ func PrintGrid(grid [][]byte) {
 func main() {
 	GlobalStack = StackCoord{}
 	CurrentCoord := Coord{1, 4}
+	TreasurePossible := []Coord{}
 	grid[CurrentCoord.Y][CurrentCoord.X] = byte('$')
+	TreasurePossible = append(TreasurePossible, CurrentCoord)
 	//grid2 := grid
 	nextMove := CheckSurounding(CurrentCoord)
 	counter := 0
+
 	for nextMove != 0 || len(GlobalStack.PrevLoc) > 0 {
 		counter++
 		switch nextMove {
@@ -89,13 +92,16 @@ func main() {
 		case 0:
 			CurrentCoord = GlobalStack.Pop()
 			// fmt.Println("POP", CurrentCoord)
-			//grid[CurrentCoord.Y][CurrentCoord.X] = byte('$')
+			// grid[CurrentCoord.Y][CurrentCoord.X] = byte('$')
 		}
 		grid[CurrentCoord.Y][CurrentCoord.X] = byte('$')
+		TreasurePossible = append(TreasurePossible, CurrentCoord)
 		nextMove = CheckSurounding(CurrentCoord)
 	}
 	PrintGrid(grid)
-
+	for _, val := range TreasurePossible {
+		fmt.Println(val.X, val.Y)
+	}
 	//grid[CurrentCoord.Y][CurrentCoord.X] = byte('X')
 	//PrintGrid()
 }
